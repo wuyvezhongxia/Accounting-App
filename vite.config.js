@@ -1,10 +1,9 @@
 import { fileURLToPath, URL } from 'node:url'
-
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
-import Components from 'unplugin-vue-components/vite';
-import { VantResolver } from 'unplugin-vue-components/resolvers';
+import Components from 'unplugin-vue-components/vite'
+import { VantResolver } from 'unplugin-vue-components/resolvers'
 import postCssPxToRem from 'postcss-pxtorem'
 // https://vite.dev/config/
 export default defineConfig({
@@ -12,28 +11,28 @@ export default defineConfig({
     vue(),
     vueDevTools(),
     Components({
-      resolvers: [VantResolver()]
-    })
+      resolvers: [VantResolver()],
+    }),
   ],
-  css:{
-    postcss:{
-      plugins:[
+  css: {
+    postcss: {
+      plugins: [
         postCssPxToRem({
           rootValue: 37.5,
-          propList: ['*'] // 需要转换的属性
-        })
-      ]
+          propList: ['*'], // 需要转换的属性
+        }),
+      ],
     },
     preprocessorOptions: {
       scss: {
-        additionalData: `@import "@/assets/css/variables.scss";`
-      }
+        additionalData: `@use "@/assets/styles/variables" as vars;`,
+      },
     },
   },
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
-  lintOnSave:false
+  lintOnSave: false,
 })
