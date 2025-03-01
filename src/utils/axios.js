@@ -7,9 +7,9 @@ const instance = axios.create({
   withCredentials: true,
   headers: {
     'X-Requested-With': 'XMLHttpRequest',
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
   },
-  timeout: 5000
+  timeout: 5000,
 })
 instance.interceptors.request.use(
   function (config) {
@@ -17,7 +17,7 @@ instance.interceptors.request.use(
     if (userStore.token) {
       // console.log('111', userStore.token)
       // config.headers['token'] = userStore.token
-      // Authorization 是 HTTP 请求头中的一个标准字段，用于向服务器传递 ​客户端身份凭证。它是实现认证/授权机制的核心传输通道。
+      // Authorization 是 HTTP 请求头中的一个标准字段，用于向服务器传递客户端身份凭证。它是实现认证/授权机制的核心传输通道。
       config.headers.Authorization = userStore.token
     }
     return config
@@ -25,7 +25,7 @@ instance.interceptors.request.use(
   function (error) {
     console.log(error)
     return Promise.reject(error)
-  }
+  },
 )
 instance.interceptors.response.use((res) => {
   // console.log('111', res)
