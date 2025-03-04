@@ -1,48 +1,48 @@
 <script setup>
-  import { ref, onMounted } from 'vue'
-  import ImgVerify from '@/components/ImgVerify.vue'
-  import { useUserLogin, useUserRegistr } from '@/api/user'
-  import { showFailToast } from 'vant'
-  import { useRouter } from 'vue-router'
-  import { useUserStore } from '@/stores/user'
-  const userStore = useUserStore()
-  const router = useRouter()
-  const verifyRef = ref(null)
-  const formModel = ref({
-    username: '',
-    password: '',
-    verify: '',
-    type: 'register',
-    imgCode: ''
-  })
-  onMounted(() => {
-    console.log(verifyRef.value.imgCode)
-  })
-  const changeType = () => {
-    if (formModel.value.type === 'register') {
+import { ref, onMounted } from 'vue'
+import ImgVerify from '@/components/ImgVerify.vue'
+import { useUserLogin, useUserRegistr } from '@/api/user'
+import { showToast } from 'vant'
+import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/user'
+const userStore = useUserStore()
+const router = useRouter()
+const verifyRef = ref(null)
+const formModel = ref({
+  username: '',
+  password: '',
+  verify: '',
+  type: 'register',
+  imgCode: '',
+})
+onMounted(() => {
+  console.log(verifyRef.value.imgCode)
+})
+const changeType = () => {
+  if (formModel.value.type === 'register') {
+    formModel.value.type = 'login'
+  } else if (formModel.value.type === 'login') {
+    formModel.value.type = 'register'
+  }
+}
+const onSubmit = async () => {
+  if (formModel.value.type === 'login') {
+    const res = await useUserLogin(formModel.value)
+    // console.log(res)
+    // console.log(userStore.token)
+    userStore.setToken(res.data.token)
+    router.push('/account/index')
+  } else if (formModel.value.type === 'register') {
+    formModel.value.imgCode = verifyRef.value.imgCode || ''
+    if (formModel.value.imgCode !== formModel.value.verify) {
+      showToast('验证码错误')
+    } else {
+      const res = await useUserRegistr(formModel.value)
+      console.log(res)
       formModel.value.type = 'login'
-    } else if (formModel.value.type === 'login') {
-      formModel.value.type = 'register'
     }
   }
-  const onSubmit = async () => {
-    if (formModel.value.type === 'login') {
-      const res = await useUserLogin(formModel.value)
-      // console.log(res)
-      // console.log(userStore.token)
-      userStore.setToken(res.data.token)
-      router.push('/account/index')
-    } else if (formModel.value.type === 'register') {
-      formModel.value.imgCode = verifyRef.value.imgCode || ''
-      if (formModel.value.imgCode !== formModel.value.verify) {
-        showFailToast('验证码错误')
-      } else {
-        const res = await useUserRegistr(formModel.value)
-        console.log(res)
-        formModel.value.type = 'login'
-      }
-    }
-  }
+}
 </script>
 <template>
   <div class="box">
@@ -64,7 +64,7 @@
           placeholder="请输入账号"
           :rules="[
             { required: true, message: '请输入账号' },
-            { pattern: /^\S{1,10}$/, message: '账号必须是1-10的非空字符' }
+            { pattern: /^\S{1,10}$/, message: '账号必须是1-10的非空字符' },
           ]"
         />
         <van-field
@@ -75,7 +75,7 @@
           placeholder="请输入密码"
           :rules="[
             { required: true, message: '请输入密码' },
-            { pattern: /^\S{6,8}$/, message: '密码必须是6-8的非空字符' }
+            { pattern: /^\S{6,8}$/, message: '密码必须是6-8的非空字符' },
           ]"
         />
         <van-field
@@ -105,33 +105,33 @@
 </template>
 
 <style lang="scss" scoped>
-  body {
-    width: 100%;
-    height: 100vh;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  van-field input:focus {
-    outline: none;
-  }
-  .box {
-    background-color: hsl(0, 7%, 94%);
-    width: 100%;
-    height: 100vh;
-    .image {
-      width: 4rem;
-      height: 4rem;
-      margin: 10px auto 10px;
-      img {
-        width: 100%;
-        height: 100%;
-      }
-    }
-    p {
-      text-align: center;
-      font-size: 13px;
-      color: #597fe7;
+body {
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+van-field input:focus {
+  outline: none;
+}
+.box {
+  background-color: hsl(0, 7%, 94%);
+  width: 100%;
+  height: 100vh;
+  .image {
+    width: 4rem;
+    height: 4rem;
+    margin: 10px auto 10px;
+    img {
+      width: 100%;
+      height: 100%;
     }
   }
+  p {
+    text-align: center;
+    font-size: 13px;
+    color: #597fe7;
+  }
+}
 </style>

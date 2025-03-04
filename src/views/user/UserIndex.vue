@@ -19,7 +19,7 @@ const getUser = async () => {
   user.username = res.data.username
   user.signature = res.data.signature
   user.avatar = res.data.avatar
-  console.log(res, user)
+  // console.log(res, user)
 }
 const confirmSig = () => {}
 </script>

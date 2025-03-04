@@ -1,32 +1,32 @@
 <script setup>
-  import { ref } from 'vue'
-  import dayjs from 'dayjs'
-  const emit = defineEmits(['select'])
-  const show = ref(false)
-  const currentDate = ref([])
-  const columnsType = ['year', 'month']
-  const toggle = () => {
-    show.value = false
+import { ref } from 'vue'
+import dayjs from 'dayjs'
+const emit = defineEmits(['select'])
+const show = ref(false)
+const currentDate = ref([])
+const columnsType = ['year', 'month']
+const toggle = () => {
+  show.value = false
+}
+const closeMonth = () => {
+  // console.log(currentDate.value)
+  show.value = false
+  emit('select', dayjs(currentDate.value).format('YYYY-MM'))
+}
+const formatter = (type, option) => {
+  // console.log(type, option)
+  if (type === 'year') {
+    option.text += '年'
   }
-  const closeMonth = () => {
-    console.log(currentDate.value)
-    show.value = false
-    emit('select', dayjs(currentDate.value).format('YYYY-MM'))
+  if (type === 'month') {
+    option.text += '月'
   }
-  const formatter = (type, option) => {
-    // console.log(type, option)
-    if (type === 'year') {
-      option.text += '年'
-    }
-    if (type === 'month') {
-      option.text += '月'
-    }
-    return option
-    // console.log(option)
-  }
-  defineExpose({
-    show
-  })
+  return option
+  // console.log(option)
+}
+defineExpose({
+  show,
+})
 </script>
 <template>
   <van-popup v-model:show="show" position="bottom" round :style="{ height: '50%' }">

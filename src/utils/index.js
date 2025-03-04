@@ -1,0 +1,18 @@
+export const typeMap = {
+  1: { icon: 'icon-canyin' },
+  2: { icon: 'icon-fushi' },
+  3: { icon: 'icon-jiaotong' },
+  4: { icon: 'icon-riyongpin' },
+  5: { icon: 'icon-gouwuchekong' },
+  6: { icon: 'icon-xuexi' },
+  7: { icon: 'icon-yiliao' },
+  8: { icon: 'icon-feijichang' },
+  9: { icon: 'icon-hezuoguanxi' },
+  10: { icon: 'icon-qita' },
+  11: { icon: 'icon-gongzi' },
+  12: { icon: 'icon-renminbi' },
+  13: { icon: 'icon-jiangjinxiangqing-hover' },
+  14: { icon: 'icon-licai' },
+  15: { icon: 'icon-tuikuan' },
+  16: { icon: 'icon-qita' },
+}
