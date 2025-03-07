@@ -29,11 +29,10 @@ const showMonth = () => {
 }
 const typesSelect = (item) => {
   state.typeSelect = item
-  console.log(state.typeSelect)
+  // console.log(state.typeSelect)
 }
 const monthSelect = (item) => {
-  state.currentTime = item
-  console.log(state.currentTime)
+  state.currentTime = item        
 }
 // 添加账单
 const onAdd = () => {
@@ -50,7 +49,7 @@ const getbill = async () => {
   }
   // console.log(params)
   const { data } = await getBillList(params)
-  console.log(data)
+  // console.log(data)
   state.totalExpense = data.totalExpense
   state.totalIncome = data.totalIncome
   state.totalPage = data.totalPage
@@ -209,23 +208,3 @@ watch(
   }
 }
 </style>
-<!-- 总结
- 1. 获取数据
-    当数据获取完,将列表清空，主要是为了保证下拉刷新操作后展示的数据是最新的，避免新旧数据混合展示给用户带来混淆
-
- 1. onload加载数据时,滚动条与底部距离小于 offset 时触发
-    判断当不是下拉刷新操作时，并且当前的页码小于总页数时，将页码加1
- 1. 下拉刷新,重新加载数据时，
-    使用分页将页码置为1
-    将加载状态置为true
-    state.finished = false,表示还有数据可以加载
-    state.page = 1
-    state.refreshing = true,表示正在进行下拉刷新操作,当 state.refreshing 被设置为 true 时，
-    -----van - pull - refresh 组件会接收到这个状态变化，进而展示出对应的刷新动画,要是不把 state.refreshing 设置为 true，在 getbill 方法里就不会执行清空列表的操作，从而可能导致新旧数据混合展示，影响用户体验。------
-    state.loading = true,表示正在加载数据。
-    onLoad()
-  Loading
-    当发起请求前会将 state.loading 设置为 true
-    当异步请求完成并成功获取到数据后，将 state.loading 设置为 false，这样加载动画就会隐藏，告知用户数据加载完成
-    还可以用于避免重复加载数据:当 loading 为 true 时，意味着正在加载数据，此时不应该再次触发加载操作，防止重复请求数据。
--->
