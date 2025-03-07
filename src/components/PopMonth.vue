@@ -21,8 +21,8 @@ const formatter = (type, option) => {
   if (type === 'month') {
     option.text += '月'
   }
+    // console.log(option)
   return option
-  // console.log(option)
 }
 defineExpose({
   show,
