@@ -10,22 +10,21 @@ const props = defineProps({
     type: Object,
   },
 })
-const id = computed(() => props.detail?.id)
-const formatDate = (date, boolean = true) => {
-  // date是一个时间戳
-  if (boolean) {
-    return dayjs(date).format('YYYY-MM-DD').split('-')
-  }
-  return date
+const getPropsDate = (date)=>{
+  return [date.getFullYear(),date.getMonth()+1,date.getDate()]
 }
-
+const getArrayDate = ()=>{
+  const now = new Date()
+  return [now.getFullYear(),now.getMonth()+1,now.getDate()]
+}
+const id = computed(() => props.detail?.id)
 // 计算属性是一个响应式对象，无法获取真正的id
-console.log(id.value)
+// console.log(id.value)
 const state = reactive({
   show: false,
   showDay: false,
   payType: id.value ? (props.detail.pay_type == 1 ? 'expense' : 'income') : 'expense',
-  date: id.value ? formatDate(props.detail.date) : formatDate(dayjs().valueOf()),
+  date: id.value ? getPropsDate(new Date(Number(props.detail.date))): getArrayDate(),
   amount: id.value ? props.detail.amount : '',
   expense: [],
   income: [],
@@ -54,13 +53,14 @@ const changeType = (type) => {
   // 切换类型时，默认选中当前类型的第一项为当前项
 }
 const choseDay = (value) => {
-  console.log(value)
-  state.date = value
+  // console.log(value)
+  const { selectedValues } = value
+  state.date = selectedValues
   state.showDay = false
 }
-// const formattedDate = (date) => {
-//   return dayjs(Number(date)).format('MM-DD')
-// }
+const formattedDate = (date) => {
+  return dayjs(date).format('MM-DD')
+}
 const remove = () => {
   state.amount = state.amount.slice(0, -1)
 }
@@ -93,7 +93,8 @@ const addBill = async () => {
   }
   if (id.value) {
     params.id = id.value
-    await updateAccountDetail(params)
+    const res = await updateAccountDetail(params)
+    console.log(res)
     state.show = false
     emit('refresh')
     emit('refreshDetail')
@@ -139,7 +140,7 @@ defineExpose({
           </span>
         </div>
         <div @click="state.showDay = true" class="time">
-          {{ $filters.transDay(state.date) }} <i class="iconfont sort-down"></i>
+          {{ formattedDate(state.date) }} <i class="iconfont sort-down"></i>
         </div>
       </div>
       <div class="money">
