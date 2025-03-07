@@ -19,14 +19,17 @@ const formattedDate = (date) => {
   return dayjs(date).format('HH:mm')
 }
 const expense = (list) => {
+  // console.log(list)
   return list
-    .filter((item) => item.type_id === 1)
+    .filter((item) => item.pay_type === 1)
     .reduce((sum, item) => (sum += Number(item.amount)), 0)
+    .toFixed(2)
 }
 const income = (list) => {
   return list
-    .filter((item) => item.type_id === 2)
+    .filter((item) => item.pay_type === 2)
     .reduce((sum, item) => (sum += Number(item.amount)), 0)
+    .toFixed(2)
 }
 </script>
 <template>
@@ -43,7 +46,7 @@ const income = (list) => {
       :key="bill.id"
       :class="[bill.type_id === 1 ? 'expense' : 'income']"
       :title="bill.type_name"
-      :value="bill.type_id === 1 ? bill.amount * -1 : bill.amount"
+      :value="(bill.type_id === 1 ? '-' : '') + Number(bill.amount).toFixed(2)"
       :label="`${formattedDate(Number(bill.date))}|${bill.remark}`"
       @click="goDetail(bill)"
     />
